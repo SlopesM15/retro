@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       //print(_controller.text.split(' '));
       // for (var i = 0; i < _controller.text.length; i++)
-      // text.add(_controller.text);
+      // text.add(_controller.text);S
     });
   }
 

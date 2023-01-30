@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_scatter/flutter_scatter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,18 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Retro Analysis',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Retro App'),
+      home: const MyHomePage(title: 'Retro Analysis'),
     );
   }
 }
@@ -34,22 +26,40 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class uniqueText {
+  String text;
+  int count;
+  uniqueText({required this.text, this.count = 0});
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> text = [];
+  TextEditingController _controller = TextEditingController();
+  List<uniqueText> ut = <uniqueText>[];
+
+  void _updateText(String value) {
+    setState(() {
+      text.clear();
+      text.addAll(_controller.text.split(' '));
+      text.forEach((element) {
+        if (!ut.contains(element)) {
+          ut.add(uniqueText(text: element, count: 1));
+        } else {
+          //vcut.where((element) => element.count = element.count + 1);
+        }
+      });
+      //print(_controller.text.split(' '));
+      // for (var i = 0; i < _controller.text.length; i++)
+      // text.add(_controller.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
+                              // textInputAction: TextInputAction.newline,
+                              onChanged: (value) => {_updateText(value)},
+                              controller: _controller,
                               maxLines: 15,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -122,17 +135,57 @@ class _MyHomePageState extends State<MyHomePage> {
                   Column(
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      SizedBox(
+                      Container(
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent)),
                           width: 400,
-                          height: 500,
+                          height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 10,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
+                            child: Scatter(
+                              alignment: Alignment.center,
+
+                              fillGaps: true,
+
+                              // ignore: prefer_const_literals_to_create_immutables
+
+                              children: [
+                                //  text.isNotEmpty
+                                //    ?
+                                for (var i = 0; i < text.length; i++)
+                                  // _updateTextList(text, text.length)
+                                  (Text(text[i]))
+                                //     : Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test'),
+                                // Text('test')
+                              ],
                             ),
+                            // child: TextField(
+                            //   maxLines: 10,
+                            //   decoration: InputDecoration(
+                            //     border: OutlineInputBorder(),
+                            //   ),
+                            // ),
                           ))
                     ],
                   ),

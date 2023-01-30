@@ -45,19 +45,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _updateText(String value) {
     setState(() {
+      List<String> utext = [];
       text.clear();
       text.addAll(_controller.text.split(' '));
-      text.forEach((element) {
-        if (!ut.contains(element)) {
-          ut.add(uniqueText(text: element, count: 1));
+      for (var i = 0; i < text.length; i++) {
+        if (ut.any((ut) => ut.text == text[i])) {
+          ut[i].count = ut[i].count + 1;
         } else {
-          //vcut.where((element) => element.count = element.count + 1);
+          utext.add(text[i]);
+          ut.add(uniqueText(text: text[i]));
+
+          ;
         }
-      });
-      //print(_controller.text.split(' '));
-      // for (var i = 0; i < _controller.text.length; i++)
-      // text.add(_controller.text);S
+      }
+      print(utext);
     });
+    //  print(ut.length);
   }
 
   @override

@@ -1,7 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+import 'dart:ui';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_scatter/flutter_scatter.dart';
+import "package:collection/collection.dart";
+import 'package:retro_analysis/cloudwords.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,32 +46,27 @@ class uniqueText {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> text = [];
   TextEditingController _controller = TextEditingController();
-  List<uniqueText> ut = <uniqueText>[];
+
+  Map<String, int> ut = {};
+  List<CloudWords> words = [];
+  List<Widget> widgets = <Widget>[];
 
   void _updateText(String value) {
     setState(() {
       List<String> utext = [];
       text.clear();
-      text.addAll(_controller.text.split(' '));
-      for (var i = 0; i < text.length; i++) {
-        if (ut.any((ut) => ut.text == text[i])) {
-          ut[i].count = ut[i].count + 1;
-        } else {
-          utext.add(text[i]);
-          ut.add(uniqueText(text: text[i]));
-
-          ;
-        }
-      }
-      print(utext);
+      ut = _controller.text
+          .split(' ')
+          .groupListsBy((w) => w)
+          .map((k, v) => MapEntry(k, v.length));
     });
-    //  print(ut.length);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.title),
       ),
       body: ListView(
@@ -139,72 +139,70 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       Container(
+                          margin: const EdgeInsets.only(right: 15),
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blueAccent)),
-                          width: 400,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          width: 385,
                           height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Scatter(
+                              clipBehavior: Clip.antiAlias,
+                              delegate: ArchimedeanSpiralScatterDelegate(
+                                  a: 1, b: 1, ratio: 1 / 2),
                               alignment: Alignment.center,
-
                               fillGaps: true,
 
                               // ignore: prefer_const_literals_to_create_immutables
 
                               children: [
-                                //  text.isNotEmpty
-                                //    ?
-                                for (var i = 0; i < text.length; i++)
-                                  // _updateTextList(text, text.length)
-                                  (Text(text[i]))
-                                //     : Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test'),
-                                // Text('test')
+                                for (var i = 0; i < ut.length; i++)
+                                  RotatedBox(
+                                    quarterTurns: Random().nextInt(4),
+                                    child: Text(
+                                      ut.keys.elementAt(i),
+                                      style: TextStyle(
+                                          fontSize: ut.values.elementAt(i) * 10
+                                              as double,
+                                          color: Color(
+                                                  (math.Random().nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                              .withOpacity(1.0)),
+                                    ),
+                                  )
                               ],
                             ),
-                            // child: TextField(
-                            //   maxLines: 10,
-                            //   decoration: InputDecoration(
-                            //     border: OutlineInputBorder(),
-                            //   ),
-                            // ),
                           ))
                     ],
                   ),
                   Column(
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      SizedBox(
-                          width: 400,
-                          height: 500,
+                      Container(
+                          margin: const EdgeInsets.only(right: 18),
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          width: 385,
+                          height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 10,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
+                            child: Scatter(
+                              delegate: ArchimedeanSpiralScatterDelegate(
+                                  ratio: MediaQuery.of(context).size.width /
+                                      MediaQuery.of(context).size.width),
+                              alignment: Alignment.center,
+                              fillGaps: true,
+
+                              // ignore: prefer_const_literals_to_create_immutables
+
+                              children: [],
                             ),
                           ))
                     ],
@@ -212,16 +210,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   Column(
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      SizedBox(
-                          width: 400,
-                          height: 500,
+                      Container(
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          width: 385,
+                          height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 10,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
+                            child: Scatter(
+                              delegate: ArchimedeanSpiralScatterDelegate(
+                                  ratio: MediaQuery.of(context).size.width /
+                                      MediaQuery.of(context).size.width),
+                              alignment: Alignment.center,
+                              fillGaps: true,
+
+                              // ignore: prefer_const_literals_to_create_immutables
+
+                              children: [],
                             ),
                           ))
                     ],

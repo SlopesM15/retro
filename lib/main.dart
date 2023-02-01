@@ -45,9 +45,15 @@ class uniqueText {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> text = [];
-  TextEditingController _controller = TextEditingController();
+
+  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
+  final TextEditingController _controller3 = TextEditingController();
 
   Map<String, int> ut = {};
+  Map<String, int> ut2 = {};
+  Map<String, int> ut3 = {};
+
   List<CloudWords> words = [];
   List<Widget> widgets = <Widget>[];
 
@@ -61,6 +67,39 @@ class _MyHomePageState extends State<MyHomePage> {
           .map((k, v) => MapEntry(k, v.length));
     });
   }
+
+  void _updateText2(String value) {
+    setState(() {
+      List<String> utext = [];
+      text.clear();
+      ut2 = _controller2.text
+          .split(' ')
+          .groupListsBy((w) => w)
+          .map((k, v) => MapEntry(k, v.length));
+    });
+  }
+
+  void _updateText3(String value) {
+    setState(() {
+      List<String> utext = [];
+      text.clear();
+      ut3 = _controller3.text
+          .split(' ')
+          .groupListsBy((w) => w)
+          .map((k, v) => MapEntry(k, v.length));
+    });
+  }
+  //   void _updateTextList(String value, Map<String, int> unitext,
+  //     TextEditingController _ucontroller) {
+  //   setState(() {
+  //     List<String> utext = [];
+  //     text.clear();
+  //     unitext = _ucontroller.text
+  //         .split(' ')
+  //         .groupListsBy((w) => w)
+  //         .map((k, v) => MapEntry(k, v.length));
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
+                              onChanged: (value) => {_updateText2(value)},
+                              controller: _controller2,
                               maxLines: 15,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -122,6 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
+                              onChanged: (value) => {_updateText3(value)},
+                              controller: _controller3,
                               maxLines: 15,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -146,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           width: 385,
-                          height: 200,
+                          height: 300,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Scatter(
@@ -190,19 +233,35 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           width: 385,
-                          height: 200,
+                          height: 300,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Scatter(
+                              clipBehavior: Clip.antiAlias,
                               delegate: ArchimedeanSpiralScatterDelegate(
-                                  ratio: MediaQuery.of(context).size.width /
-                                      MediaQuery.of(context).size.width),
+                                  a: 1, b: 1, ratio: 1 / 2),
                               alignment: Alignment.center,
                               fillGaps: true,
 
                               // ignore: prefer_const_literals_to_create_immutables
 
-                              children: [],
+                              children: [
+                                for (var i = 0; i < ut2.length; i++)
+                                  RotatedBox(
+                                    quarterTurns: Random().nextInt(4),
+                                    child: Text(
+                                      ut2.keys.elementAt(i),
+                                      style: TextStyle(
+                                          fontSize: ut2.values.elementAt(i) * 10
+                                              as double,
+                                          color: Color(
+                                                  (math.Random().nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                              .withOpacity(1.0)),
+                                    ),
+                                  )
+                              ],
                             ),
                           ))
                     ],
@@ -217,19 +276,35 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           width: 385,
-                          height: 200,
+                          height: 300,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Scatter(
+                              clipBehavior: Clip.antiAlias,
                               delegate: ArchimedeanSpiralScatterDelegate(
-                                  ratio: MediaQuery.of(context).size.width /
-                                      MediaQuery.of(context).size.width),
+                                  a: 1, b: 1, ratio: 1 / 2),
                               alignment: Alignment.center,
                               fillGaps: true,
 
                               // ignore: prefer_const_literals_to_create_immutables
 
-                              children: [],
+                              children: [
+                                for (var i = 0; i < ut3.length; i++)
+                                  RotatedBox(
+                                    quarterTurns: Random().nextInt(4),
+                                    child: Text(
+                                      ut3.keys.elementAt(i),
+                                      style: TextStyle(
+                                          fontSize: ut3.values.elementAt(i) * 10
+                                              as double,
+                                          color: Color(
+                                                  (math.Random().nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                              .withOpacity(1.0)),
+                                    ),
+                                  )
+                              ],
                             ),
                           ))
                     ],
